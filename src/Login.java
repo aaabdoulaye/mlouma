@@ -1,5 +1,6 @@
 /**
  * @author Ndjido A BAR
+   @author abdoul A. Abdoul aziz
  */
 
 
@@ -26,7 +27,7 @@ public class Login implements CommandListener
         //loading image logo
         try
         {
-            this._logo = Image.createImage("mlouma.jpeg");
+            this._logo = Image.createImage("/mlouma.jpeg");
 
         } catch (IOException ex)
           {
@@ -39,9 +40,9 @@ public class Login implements CommandListener
         
 
         //commandes
-        this._cancelCmd = new Command("Annuler", Command.SCREEN,0);
-        this._loginCmd = new Command("Login", Command.OK,0);
-        this._inscriptionCmd = new Command("inscription",Command.SCREEN,1);
+        this._cancelCmd = new Command("Sortir", Command.SCREEN,1);
+        this._loginCmd = new Command("Connection", Command.SCREEN,0);
+        this._inscriptionCmd = new Command("Inscription",Command.SCREEN,0);
         //form
         this._form = new Form("Authentification");
 
@@ -81,13 +82,15 @@ public class Login implements CommandListener
 
         String label = c.getLabel();
 
-        if(label.equals("Login"))
+        if(label.equals("Connection"))
         {
             if(this._login.getString().equals(""))
             {
                Alert errorLogin = new Alert("Erreur","Le nom d'utilisateur est requis!", null, AlertType.WARNING);
-                     errorLogin.setTimeout(30000);
+                     errorLogin.setTimeout(5000);
             _display.setCurrent(errorLogin);
+            
+            new Login(this._display,this._next);
 
             }
 
@@ -96,14 +99,15 @@ public class Login implements CommandListener
                Alert errorLogin = new Alert("Erreur","Le mot de passe est requis!", null, AlertType.WARNING);
                      errorLogin.setTimeout(5000);
             _display.setCurrent(errorLogin);
-
+            
+            new Login(this._display,this._next);
             }
 
             if(this._login.getString().equals("ndjido") && this._pwd.getString().equals("einstein"))
             {
                Alert success = new Alert("Success","Welcome to MLouma platform!", null, AlertType.INFO);
-                     success.setTimeout(30000);
-            _display.setCurrent(success);
+                     success.setTimeout(5000);
+                     _display.setCurrent(success);
 
             new MainMenu(this._display);
 
@@ -112,8 +116,8 @@ public class Login implements CommandListener
             else
               {
                 Alert error = new Alert("Erreur","Login ou mot de passe incorrect!", null, AlertType.ERROR);
-                      error.setTimeout(30000);
-               _display.setCurrent(error);
+                      error.setTimeout(5000);
+                      _display.setCurrent(error);
 
               }
         }
@@ -125,6 +129,5 @@ public class Login implements CommandListener
         }
 
     }
-
-    
+ 
 }

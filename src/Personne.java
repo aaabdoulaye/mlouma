@@ -8,7 +8,7 @@ public class Personne implements JSONable {
 	private int sexe; 
 	private String adresse;
 	private String mail;
-
+	private String Tproduction;
 	public Personne(){
 
 	}
@@ -40,6 +40,10 @@ public class Personne implements JSONable {
 	public void setAdresse(String a ){
 		this.adresse=a;
 	}
+	
+	public void setProduction(String p){
+		this.Tproduction = p;
+	}
 
 	public String getNom(){
 		return this.nom; 
@@ -68,6 +72,10 @@ public class Personne implements JSONable {
 	public int getSexe(){
 		return this.sexe; 
 	}
+	
+	public String  getProduction(){
+		return this.Tproduction;
+	}
 
 	public void fromJSON(String jsonString) {
 		try {
@@ -79,6 +87,7 @@ public class Personne implements JSONable {
 			setMail(json.getString("mail"));
 			setAdresse(json.getString("adresse"));
 			setSexe(json.getInt("sexe"));
+			setProduction(json.getString(Tproduction));
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
@@ -93,6 +102,7 @@ public class Personne implements JSONable {
 			inner.put("LC", getLocalite());
 			inner.put("AD", getAdresse());
 			inner.put("EM", getMail());
+			inner.put("TY", getProduction());
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}

@@ -5,8 +5,14 @@
 
 
 //import java.io.IOException;
-import javax.microedition.midlet.*;
-import javax.microedition.lcdui.*;
+
+
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
+import javax.microedition.midlet.MIDlet;
 
 public class MLouma extends MIDlet implements CommandListener
 {
@@ -36,6 +42,7 @@ public class MLouma extends MIDlet implements CommandListener
         {
             this._display = Display.getDisplay(this);
             showSplashScreen(this._display, new TrivialFrom());
+          
         }
 
         /*
@@ -64,7 +71,10 @@ public class MLouma extends MIDlet implements CommandListener
 
     public void commandAction(Command c, Displayable d)
     {
-
+    	if(c==_exitCmd)
+    	{
+    		destroyApp(true);
+    	}
        
     }
 
@@ -84,4 +94,5 @@ public class MLouma extends MIDlet implements CommandListener
 
    
     
+   
 }

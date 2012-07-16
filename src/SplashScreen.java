@@ -8,7 +8,13 @@
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.microedition.lcdui.*;
+
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 // Class MLouma splash screen
 public class SplashScreen extends Canvas
@@ -25,6 +31,13 @@ public class SplashScreen extends Canvas
         this._next = next;
         this._timer = new Timer();
         this._display.setCurrent(this);
+        try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 
     }
 
@@ -40,7 +53,7 @@ public class SplashScreen extends Canvas
 
     protected void showNotify() {
         super.showNotify();
-        this._timer.schedule(new CountDown(), 300000);
+       // this._timer.schedule(new CountDown(),20000);
     }
 
     protected void paint(Graphics g)
@@ -58,7 +71,7 @@ public class SplashScreen extends Canvas
         {
         	try 
             {
-				SplashScreen.this._image = Image.createImage("mlouma.jpeg");
+				SplashScreen.this._image = Image.createImage("/mlouma.jpeg");
 			
             } catch (IOException e)
               {
@@ -78,6 +91,8 @@ public class SplashScreen extends Canvas
          if(this._image!=null)
          {
             g.drawImage(_image, width/2, height/2,Graphics.HCENTER|Graphics.VCENTER);
+         
+			
          }
          else
          {
@@ -108,6 +123,8 @@ public class SplashScreen extends Canvas
         public void run()
         {
             dismiss();
+            //new Login(_display,_next);
+
         }
     }
 

@@ -32,6 +32,7 @@ public class Inscription  implements CommandListener
 	private TextField region; 
 	private TextField mail;
 	private TextField localite;
+	private TextField Tproduction;
 	MessageConnection clientConn;
     private Form compose;
 	
@@ -54,19 +55,19 @@ public class Inscription  implements CommandListener
 	 
         compose = new Form("Formulaire d'inscription");
         
-        nom = new TextField("Nom","",15,TextField.ANY);
-        prenom = new TextField("Prenom","",25,TextField.ANY);
-	    adresse = new TextField("Adresse","",15,TextField.ANY);
-	    region = new TextField("Region","",15,TextField.ANY);
-	    mail = new TextField("email","",25,TextField.ANY);
-	    localite = new TextField("Localite","",15,TextField.ANY);
-	    
+        nom = new TextField("Nom ","",15,TextField.ANY);
+        prenom = new TextField("Prenom:","",25,TextField.ANY);
+	    adresse = new TextField("Adresse:","",15,TextField.ANY);
+	    region = new TextField("Region:","",15,TextField.ANY);
+	    mail = new TextField("email:","",25,TextField.EMAILADDR);
+	    localite = new TextField("Localite:","",15,TextField.ANY);
+	    Tproduction = new TextField("Type Production:", "", 15, TextField.ANY);
 	    
         envoyer = new Command("envoyer",Command.SCREEN,1);
         quitter = new Command("quitter",Command.BACK,0);
             
             
-	     group1 = new ChoiceGroup("Sexe",ChoiceGroup.EXCLUSIVE,list,null);
+	     group1 = new ChoiceGroup("Sexe:",ChoiceGroup.EXCLUSIVE,list,null);
 
 
         compose.append(nom);
@@ -75,6 +76,7 @@ public class Inscription  implements CommandListener
 	    compose.append(adresse);
 	    compose.append(region);
 	    compose.append(localite);
+	    compose.append(Tproduction);
 	    compose.append(mail);
 	    
 	    compose.addCommand(envoyer);
@@ -98,10 +100,11 @@ public class Inscription  implements CommandListener
 			    u1.setLocalite(localite.getString());
 			    u1.setAdresse(adresse.getString());
 			    u1.setMail(mail.getString());
+			    u1.setProduction(Tproduction.getString());
 			   
 			    String donnee ="insj2me*"+u1.toJSON();
 			 
-			    
+			    System.out.println(donnee);
 			    try  
 			    {
                     clientConn=(MessageConnection)Connector.open("sms://22110");
