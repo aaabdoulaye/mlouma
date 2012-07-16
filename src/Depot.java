@@ -1,9 +1,12 @@
+import java.util.Calendar;
+
 import javax.microedition.io.Connector;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.DateField;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
@@ -16,10 +19,9 @@ public class Depot implements CommandListener{
 	private Display _display;
 	
 	
-	private TextField _ldp; 
-	private TextField _quantite;
-	private TextField _unite;
-	private TextField _date;
+	private TextField _ldp, _quantite, _unite;
+	DateField date;
+	
 	
     MessageConnection clientConn;
 
@@ -35,13 +37,17 @@ public class Depot implements CommandListener{
 	
 	public Depot(Display display)
 	{
+		
+		
 		this._display = display;
 		_form = new Form("MLouma Depot");
 		
 		_ldp = new TextField("ldp:","",15,TextField.ANY);
 		_quantite = new TextField("quantite:","",5,TextField.NUMERIC);
 		_unite = new TextField("unite:","",15,TextField.ANY);
-		_date = new TextField("date Production:","",15,TextField.ANY);
+		
+		date = new DateField("date", DateField.DATE);
+		
 		
 		g1 = new ChoiceGroup("Transport:", ChoiceGroup.EXCLUSIVE, transport, null);
 		
@@ -54,8 +60,11 @@ public class Depot implements CommandListener{
 		_form.append(_ldp);
 		_form.append(_quantite);
 		_form.append(_unite);
-		_form.append(_date);
+		_form.append(date);
 		_form.append(g1);
+		
+		
+		
 		
 		_form.addCommand(_retour);
 		_form.addCommand(_envoyer);
@@ -72,8 +81,13 @@ public class Depot implements CommandListener{
 	{
 		if(arg0.equals(_envoyer))
 		{
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date.getDate());
+			String date = cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR);
+			
 			Produit p1 = new Produit();
-			p1.SetDate(_date.getString());
+			p1.SetDate(date);
 			p1.setTransport(g1.getSelectedIndex());
 			p1.SetLdp(_ldp.getString());
 			p1.SetNom(ListeProduit.GROUP.getString(ListeProduit.GROUP.getSelectedIndex()));
@@ -120,7 +134,7 @@ public class Depot implements CommandListener{
 		
 		
 		if(arg0.equals(_retour)){
-			new Offre(_display);
+			new ListeProduit(_display);
 		}
 		
 	}
