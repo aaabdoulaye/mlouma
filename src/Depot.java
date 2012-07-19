@@ -1,3 +1,7 @@
+/**
+ * @author A. Abdoul Aziz
+ */
+
 import java.util.Calendar;
 
 import javax.microedition.io.Connector;
@@ -18,6 +22,7 @@ import javax.wireless.messaging.TextMessage;
 public class Depot implements CommandListener{
 	private Display _display;
 	
+	int i;
 	
 	private TextField _ldp, _quantite, _unite;
 	DateField date;
@@ -30,6 +35,9 @@ public class Depot implements CommandListener{
 	ChoiceGroup g1;
 	
 	
+	
+	Mabase mb;
+	
 	private Form _form;
 	
 	private Command _retour ;
@@ -37,16 +45,23 @@ public class Depot implements CommandListener{
 	
 	public Depot(Display display)
 	{
+		if(MainMenu.G1.isSelected(0)){
+			mb = new Mabase("achatdb"); 
+		}
+		
+		else {
+			mb = new Mabase("ventedb");
+		}
 		
 		
 		this._display = display;
 		_form = new Form("MLouma Depot");
 		
-		_ldp = new TextField("ldp:","",15,TextField.ANY);
-		_quantite = new TextField("quantite:","",5,TextField.NUMERIC);
-		_unite = new TextField("unite:","",15,TextField.ANY);
+		_ldp = new TextField("Localite:","",25,TextField.ANY);
+		_quantite = new TextField("Quantite:","",25,TextField.NUMERIC);
+		_unite = new TextField("Unite:","",25,TextField.ANY);
 		
-		date = new DateField("date", DateField.DATE);
+		date = new DateField("Date", DateField.DATE);
 		
 		
 		g1 = new ChoiceGroup("Transport:", ChoiceGroup.EXCLUSIVE, transport, null);
@@ -81,10 +96,19 @@ public class Depot implements CommandListener{
 	{
 		if(arg0.equals(_envoyer))
 		{
+		
+			i = mb.RecordNumber();
+			
+			
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date.getDate());
 			String date = cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR);
+			
+			mb.WriteTestData(ListeProduit.GROUP.getString(ListeProduit.GROUP.getSelectedIndex()),i,date,_ldp.getString(),_quantite.getString(),_unite.getString());
+			
+			mb.CloseRectStore();
+			
 			
 			Produit p1 = new Produit();
 			p1.SetDate(date);
@@ -101,7 +125,7 @@ public class Depot implements CommandListener{
 				p1.SetType(MainMenu.G1.getString(1));
 			
 			
-			String donnee = p1.toJSON();
+			String donnee = "insj2me*"+p1.toJSON();
 
 		    System.out.println(donnee);
 		    
@@ -111,6 +135,7 @@ public class Depot implements CommandListener{
                 clientConn=(MessageConnection)Connector.open("sms://22110");
             } catch(Exception e) 
           		{
+            		
                 	Alert alert = new Alert("Alert");
                 	alert.setString("Unable to connect to Station because of network problem");
                 	alert.setTimeout(2000);

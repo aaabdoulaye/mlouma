@@ -1,11 +1,14 @@
 /**
  * @author Ndjido A BAR
+ * @author A. Abdoul Aziz
  */
 
 
 
 //import java.io.IOException;
-
+/**
+ * 
+ */
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -18,10 +21,7 @@ public class MLouma extends MIDlet implements CommandListener
 {
     private Display _display = null;
     private Command _exitCmd = new Command("Exit", Command.EXIT, 0);
-   // private Command _nextCmd = new Command("Selectionner", Command.SCREEN, 1);
-    //private Image _ventes, _achats;
-    String[] mainMenuItem = {"Mes ventes", "Mes achats"};
-   // private List _mainMenuList;
+  
 
     
     //constructor

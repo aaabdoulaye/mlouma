@@ -22,7 +22,7 @@ public class ListeProduit implements CommandListener {
 		
 		GROUP = new ChoiceGroup("Lsite des Produits", ChoiceGroup.EXCLUSIVE, liste, null);
 		_retour = new Command("retour", Command.BACK, 0);
-		_envoyer = new Command("envoyer",Command.OK,0);
+		_envoyer = new Command("suivant",Command.OK,0);
 		
 		_form.append(GROUP);
 		_form.addCommand(_retour);

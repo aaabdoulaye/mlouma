@@ -1,13 +1,14 @@
 /**
  *
  * @author Ndjido A BAR
- */
+ * @author A. Abdoul Aziz
+  */
 
 
 
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
+
 
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
@@ -53,7 +54,6 @@ public class SplashScreen extends Canvas
 
     protected void showNotify() {
         super.showNotify();
-       // this._timer.schedule(new CountDown(),20000);
     }
 
     protected void paint(Graphics g)
@@ -65,8 +65,6 @@ public class SplashScreen extends Canvas
         
 
         //load MLouma logo
-        //loadLogo logo = new loadLogo();
-        //logo.run();
         if(SplashScreen.this._image==null)
         {
         	try 
@@ -117,16 +115,6 @@ public class SplashScreen extends Canvas
         this._display.setCurrent(_next);
     }
 
-    //CountDonw
-    private class CountDown extends TimerTask
-    {
-        public void run()
-        {
-            dismiss();
-            //new Login(_display,_next);
-
-        }
-    }
 
     // load MLouma logo
 
