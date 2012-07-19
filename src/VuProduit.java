@@ -3,7 +3,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 
 
@@ -15,12 +14,15 @@ public class VuProduit implements CommandListener {
 	TextField tb ;
 	Mabase mb;
 	
-	public VuProduit(Display display, int i) {
-		
+	public VuProduit(Display display, int i)
+	{
+
 		if(MainMenu.G1.isSelected(0))
 			mb = new Mabase("achatdb");
+		
 		else
 			mb = new Mabase("ventedb");
+		
 		_form =new Form("details");
 		this._display = display;
 		this._idproduit=i;
@@ -31,16 +33,6 @@ public class VuProduit implements CommandListener {
 		_form.append(tb);
 		
 		_form.addCommand(_retour);
-		
-		
-		
-		
-		
-		// je me suis arreter ici ; 
-		
-		
-		
-		
 		_form.setCommandListener(this);
 		
 		this._display.setCurrent(_form);
@@ -48,7 +40,7 @@ public class VuProduit implements CommandListener {
 	
 
 	public void commandAction(Command c, Displayable d) {
-		if(c==_retour)
+		if(c.equals(_retour))
 		{
 			new Offre(_display);
 		}

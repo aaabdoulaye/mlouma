@@ -1,3 +1,7 @@
+/**
+ * @author A. Abdoul Aziz
+ */
+
 import javax.microedition.io.Connector;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.AlertType;
@@ -42,12 +46,7 @@ public class Inscription  implements CommandListener
 
 	Personne u1 = new Personne();
 
-	//constructeur
-	/** 
-	 * 
-	 * @param display
-	 * @return 
-	 */
+	
 	public Inscription(Display display)
 	{
 		this.display = display;
@@ -86,13 +85,11 @@ public class Inscription  implements CommandListener
 	   
 	}
 
-	/**
-	 * 
-	 */
 	public void commandAction(Command c, Displayable d) 
 	{
 			if (c == envoyer)
 			{
+				//creation de l'utilisateur et insertion des données  
 			 	u1.setNom(nom.getString());
 			    u1.setPrenom(prenom.getString());
 			    u1.setSexe(group1.getSelectedIndex());
@@ -102,6 +99,7 @@ public class Inscription  implements CommandListener
 			    u1.setMail(mail.getString());
 			    u1.setProduction(Tproduction.getString());
 			   
+			    // envoit de l'objet jSON
 			    String donnee ="insj2me*"+u1.toJSON();
 			 
 			    System.out.println(donnee);
@@ -111,7 +109,7 @@ public class Inscription  implements CommandListener
                 } catch(Exception e) 
               		{
                     	alert = new Alert("Alert");
-                    	alert.setString("Unable to connect to Station because of network problem");
+                    	alert.setString("Impossible de se connecter au serveur. Probleme de serveur");
                     	alert.setTimeout(2000);
                     	display.setCurrent(alert);
               		}
@@ -126,7 +124,7 @@ public class Inscription  implements CommandListener
               	{
                     Alert alert=new Alert("Alert","",null,AlertType.INFO);
                     alert.setTimeout(Alert.FOREVER);
-                    alert.setString("Unable to send");
+                    alert.setString("Impossible d'envoyer le message");
                     display.setCurrent(alert);
               	}
 			 }

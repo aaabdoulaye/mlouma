@@ -2,15 +2,21 @@
  * @author A. Abdoul Aziz
  */
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
 
 
-public class Offre implements CommandListener{
+public class Offre implements CommandListener
+{
 	
 	
 	private Display display;
@@ -25,11 +31,12 @@ public class Offre implements CommandListener{
 	
 	Form form;
 	
-	public Offre(Display display){
+	public Offre(Display display)
+	{
 		if (MainMenu.G1.isSelected(0))
 		{
 			nombase = "achatdb";
-			 mb= new Mabase(nombase);
+			mb= new Mabase(nombase);
 			s= mb.ReadStream(); 
 			form = new Form("Mes Offres");
 			ch = new ChoiceGroup("achat", ChoiceGroup.EXCLUSIVE, s, null);
@@ -41,7 +48,7 @@ public class Offre implements CommandListener{
 		{
 			form = new Form("Mes Demandes");
 			nombase = "ventedb";
-			 mb= new Mabase(nombase);
+			mb= new Mabase(nombase);
 			s= mb.ReadStream(); 
 			ch = new ChoiceGroup("achat", ChoiceGroup.EXCLUSIVE, s, null);
 			mb.CloseRectStore();
@@ -79,25 +86,77 @@ public class Offre implements CommandListener{
 		if(c==_modifier)
 		{
 			
+			RecordStore rs = null;
+			try
+			{
+				rs = RecordStore.openRecordStore(nombase, true);
+			}
+			catch (RecordStoreException e1) 
+			{
+				e1.printStackTrace();
+			}
+			
+			try
+			{
+				byte[] rectData = new byte[500];
+				 int t=0;
+				 String produit="",date="",localite="",quantite="",unite = "",transport="";
+				
+				 ByteArrayInputStream strmBytes = new ByteArrayInputStream(rectData);
+				 
+				 DataInputStream strmDataType = new DataInputStream(strmBytes);
+				 
+				  for (int i = 1; i <= rs.getNumRecords(); i++)
+			      {
+					  if(i==ch.getSelectedIndex()+1)
+					  {
+						  rs.getRecord(i, rectData, 0);
+						 
+						   t=strmDataType.readInt()+1;
+						   produit = strmDataType.readUTF();
+						   date = strmDataType.readUTF();
+						   localite = strmDataType.readUTF();
+						   quantite = strmDataType.readUTF();
+						   unite = strmDataType.readUTF();
+						   transport = strmDataType.readUTF();
+								   
+						  strmBytes.reset();
+					  }
+			      }
+				  
+				  strmBytes.close();
+				  strmDataType.close();
+				 new ListeProduit(nombase,display,t,produit,date,localite,quantite,unite,transport);
+				}
+			
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				} 
+				
 		}
 		
-		if(c==_sortir)
+		if(c.equals(_sortir))
 		{
 			new MainMenu(display);
 		}
 		
-		if(c==_supprimer)
+		if(c.equals(_supprimer))
 		{
 			mb.openRectStore(nombase);
 			mb.deleteRecord(ch.getSelectedIndex());
 			mb.CloseRectStore();
 			new Offre(display);
 		}
-		if(c==_renitialiser)
+		if(c.equals(_renitialiser))
 		{
 			
+			mb.deleteRecStore(nombase);
+			mb.CloseRectStore();
+			new Offre(display);
 		}
-		if(c==_visualiser){
+		if(c.equals(_visualiser))
+		{
 			new VuProduit(display,ch.getSelectedIndex()+1);
 			mb.CloseRectStore();
 		}

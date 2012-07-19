@@ -17,7 +17,6 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
-// Class MLouma splash screen
 public class SplashScreen extends Canvas
 {
 
@@ -32,27 +31,34 @@ public class SplashScreen extends Canvas
         this._next = next;
         this._timer = new Timer();
         this._display.setCurrent(this);
-        try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+        
+        // faire un pause pour montrer le logo
+        try 
+        {
+			Thread.sleep(4000);
+		}
+        catch (InterruptedException e)
+		{
 			e.printStackTrace();
 		}
         
 
     }
 
-    protected void keyPressed(int keyCode) {
+    protected void keyPressed(int keyCode)
+    {
         super.keyPressed(keyCode);
         this.dismiss();
     }
 
-    protected void pointerPressed(int x, int y) {
+    protected void pointerPressed(int x, int y)
+    {
         super.pointerPressed(x, y);
         this.dismiss();
     }
 
-    protected void showNotify() {
+    protected void showNotify()
+    {
         super.showNotify();
     }
 
@@ -114,13 +120,7 @@ public class SplashScreen extends Canvas
         this._timer.cancel();
         this._display.setCurrent(_next);
     }
-
-
-    // load MLouma logo
-
-   
-    	
-    	
+ 	
 }
 
 

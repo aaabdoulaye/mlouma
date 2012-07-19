@@ -50,22 +50,28 @@ public class Produit implements JSONable
 		return _transport;
 	}
 	
-	public void SetLdp(String l){
+	public void SetLdp(String l)
+	{
 		this._ldp = l;
 	}
-	public void SetNom(String n){
+	public void SetNom(String n)
+	{
 		this._nomProduit = n;
 	}
-	public void SetQuantite( String q){
+	public void SetQuantite( String q)
+	{
 		this._quantite = q ;
 	}
-	public void SetType(String t){
+	public void SetType(String t)
+	{
 		this._type = t;
 	}
-	public void SetUnite(String u){
+	public void SetUnite(String u)
+	{
 		this._unite = u;
 	}
-	public void SetDate(String d){
+	public void SetDate(String d)
+	{
 		this._date = d;
 	}
 	
@@ -77,7 +83,8 @@ public class Produit implements JSONable
 	public String toJSON() 
 	{
 		JSONObject inner = new JSONObject();
-		try {
+		try 
+		{
 			inner.put("LDP", getLdp());
 			inner.put("NDP", getNom());
 			inner.put("QTe", getQuantite());
@@ -85,7 +92,9 @@ public class Produit implements JSONable
 			inner.put("UT", getUnite());
 			inner.put("DPD", getDate());
 			inner.put("TR", getTransport());
-		} catch (JSONException e) {
+		}
+		catch (JSONException e) 
+		{
 			e.printStackTrace();
 		}
 		
@@ -95,8 +104,6 @@ public class Produit implements JSONable
 
 	public void fromJSON(String jsonString) 
 	{
-		
-		
+	// a implementer
 	}
-
 }

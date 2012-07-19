@@ -1,13 +1,11 @@
-
-
-import java.io.IOException;
-import javax.microedition.lcdui.*;
-
-
 /**
  *
  * @author A. Abdoul Aziz
  */
+
+import java.io.IOException;
+import javax.microedition.lcdui.*;
+
 public class MainMenu implements  CommandListener
 {
     private Display _display;

@@ -4,12 +4,6 @@
  */
 
 
-
-//import java.io.IOException;
-/**
- * 
- */
-
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -45,17 +39,6 @@ public class MLouma extends MIDlet implements CommandListener
           
         }
 
-        /*
-        Image[] mainMenuItemImg = {this._ventes, this._achats};
-        this._mainMenuList = new List("Menu Principal", List.IMPLICIT, this.mainMenuItem, mainMenuItemImg);
-
-        _mainMenuList.addCommand(_nextCmd);
-        _mainMenuList.addCommand(_exitCmd);
-        _mainMenuList.setCommandListener(this);
-        
-        this._display.setCurrent(_mainMenuList);
-         */
-        //new MainMenu();
         if(this._display!=null)
         new Login(this._display,  new TrivialFrom());
     }
@@ -78,7 +61,6 @@ public class MLouma extends MIDlet implements CommandListener
        
     }
 
-    //trivial form for splash screen
     class TrivialFrom extends Form
     {
 

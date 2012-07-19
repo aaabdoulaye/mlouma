@@ -1,5 +1,10 @@
-
-public class Personne implements JSONable {
+/**
+ * 
+ * @author A. Abdoul Aziz
+ *
+ */
+public class Personne implements JSONable
+{
 	 
 	private String nom;
 	private String prenom;
@@ -9,75 +14,94 @@ public class Personne implements JSONable {
 	private String adresse;
 	private String mail;
 	private String Tproduction;
-	public Personne(){
-
+	
+	
+	public Personne()
+	{
 	}
 
-	public void setNom(String n ){
+	public void setNom(String n )
+	{
 		this.nom=n;
 	}
 
-	public void setPrenom(String p ){
+	public void setPrenom(String p )
+	{
 		this.prenom=p;
 	}
 
-	public void setLocalite(String l ){
+	public void setLocalite(String l )
+	{
 		this.localite=l;
 	}
 
-	public void setRegion(String r ){
+	public void setRegion(String r )
+	{
 		this.region=r;
 	}
 
-	public void setSexe(int s ){
+	public void setSexe(int s )
+	{
 		this.sexe=s;
 	}
 	
-	public void setMail(String m ){
+	public void setMail(String m )
+	{
 		this.mail=m;
 	}
 
-	public void setAdresse(String a ){
+	public void setAdresse(String a )
+	{
 		this.adresse=a;
 	}
 	
-	public void setProduction(String p){
+	public void setProduction(String p)
+	{
 		this.Tproduction = p;
 	}
 
-	public String getNom(){
+	public String getNom()
+	{
 		return this.nom; 
 	}
 
-	public String getPrenom(){
+	public String getPrenom()
+	{
 		return this.prenom; 
 	}
 
-	public String getLocalite(){
+	public String getLocalite()
+	{
 		return this.localite; 
 	}
 
-	public String getRegion(){
+	public String getRegion()
+	{
 		return this.region; 
 	}
 
-	public String getAdresse(){
+	public String getAdresse()
+	{
 		return this.adresse; 
 	}
 
-	public String getMail(){
+	public String getMail()
+	{
 		return this.mail; 
 	}
 
-	public int getSexe(){
+	public int getSexe()
+	{
 		return this.sexe; 
 	}
 	
-	public String  getProduction(){
+	public String  getProduction()
+	{
 		return this.Tproduction;
 	}
 
-	public void fromJSON(String jsonString) {
+	public void fromJSON(String jsonString)
+	{
 		try {
 			JSONObject json = new JSONObject(jsonString);
 			setNom(json.getString("nom"));
@@ -88,13 +112,19 @@ public class Personne implements JSONable {
 			setAdresse(json.getString("adresse"));
 			setSexe(json.getInt("sexe"));
 			setProduction(json.getString(Tproduction));
-		} catch (JSONException ex) {
+		} 
+		catch (JSONException ex) 
+		{
 			ex.printStackTrace();
 		}
 	}
-	public String toJSON() {
+	
+	
+	public String toJSON() 
+	{
 		JSONObject inner = new JSONObject();
-		try {
+		try 
+		{
 			inner.put("N", getNom());
 			inner.put("PN", getPrenom());
 			inner.put("S",getSexe());
@@ -103,9 +133,12 @@ public class Personne implements JSONable {
 			inner.put("AD", getAdresse());
 			inner.put("EM", getMail());
 			inner.put("TY", getProduction());
-		} catch (JSONException ex) {
+		}
+		catch (JSONException ex) 
+		{
 			ex.printStackTrace();
 		}
+
 		return inner.toString();
 	}
 }
