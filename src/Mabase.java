@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Display;
+import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreNotOpenException;
 
@@ -17,7 +18,7 @@ public class Mabase
 	
 	Display display;
 	private RecordStore rs = null ;
-	
+	private RecordEnumeration re = null;
 	
 	public Mabase(String nombase)
 	{
@@ -53,15 +54,19 @@ public class Mabase
 			ByteArrayInputStream strmBytes = new ByteArrayInputStream(rectData);
 		 
 			DataInputStream strmDataType = new DataInputStream(strmBytes);
+			re = rs.enumerateRecords(null,null, true);
 		 
 			for (int i=0; i < rs.getNumRecords(); i++)
 			{
-				System.out.println(i);
 				rs.getRecord(i+1, rectData, 0);
+				strmDataType.readInt();
 				String st =strmDataType.readUTF();
+				st=st+" | "+strmDataType.readUTF() ;
 				s[i] = st;
 				strmBytes.reset();
 				System.out.println("la piste "+s[i]);
+				
+			
 	        
 			}
 		  
@@ -206,7 +211,7 @@ public class Mabase
 				byte[] record;
 				
 				strmDataType.writeInt(i);
-				strmDataType.writeUTF("<supprimé>");
+				strmDataType.writeUTF("<supprimer>");
 				strmDataType.writeUTF("");
 				strmDataType.writeUTF("");
 				strmDataType.writeUTF("");

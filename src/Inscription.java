@@ -2,9 +2,11 @@
  * @author A. Abdoul Aziz
  */
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
+
 import javax.microedition.io.Connector;
 import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -12,19 +14,20 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.TextField;
+import javax.wireless.messaging.Message;
 import javax.wireless.messaging.MessageConnection;
+import javax.wireless.messaging.MessageListener;
 import javax.wireless.messaging.TextMessage;
 
 
 
-public class Inscription  implements CommandListener 
+public class Inscription  implements CommandListener,MessageListener
 {
 	
 	//les commanndes 
 	private Command quitter;
 	private Command envoyer;
 	
-	private Alert alert;
 	
 	Displayable next;
 	Display display; 
@@ -37,7 +40,12 @@ public class Inscription  implements CommandListener
 	private TextField mail;
 	private TextField localite;
 	private TextField Tproduction;
+	
 	MessageConnection clientConn;
+    MessageConnection msgConnection;
+	MessageListener listener;
+	String port="22110";
+	 
     private Form compose;
 	
 	
@@ -83,6 +91,7 @@ public class Inscription  implements CommandListener
 	    compose.setCommandListener(this);
 	    this.display.setCurrent(compose);
 	   
+	    
 	}
 
 	public void commandAction(Command c, Displayable d) 
@@ -96,44 +105,72 @@ public class Inscription  implements CommandListener
 			    u1.setRegion(region.getString()); 
 			    u1.setLocalite(localite.getString());
 			    u1.setAdresse(adresse.getString());
-			    u1.setMail(mail.getString());
+			    String s = mail.getString().replace('@', '-');
+			    u1.setMail(s);
 			    u1.setProduction(Tproduction.getString());
-			   
+			    
+			    System.out.println(s);
 			    // envoit de l'objet jSON
 			    String donnee ="insj2me*"+u1.toJSON();
 			 
-			    System.out.println(donnee);
-			    try  
-			    {
-                    clientConn=(MessageConnection)Connector.open("sms://22110");
-                } catch(Exception e) 
-              		{
-                    	alert = new Alert("Alert");
-                    	alert.setString("Impossible de se connecter au serveur. Probleme de serveur");
-                    	alert.setTimeout(2000);
-                    	display.setCurrent(alert);
-              		}
-              try 
-              {
-                    TextMessage textmessage = (TextMessage) clientConn.newMessage(MessageConnection.TEXT_MESSAGE);
-                    textmessage.setAddress("sms://22110");
-                    textmessage.setPayloadText(donnee);
-                    clientConn.send(textmessage);
-                    new Login(this.display,next);
-              } catch(Exception e)
-              	{
-                    Alert alert=new Alert("Alert","",null,AlertType.INFO);
-                    alert.setTimeout(Alert.FOREVER);
-                    alert.setString("Impossible d'envoyer le message");
-                    display.setCurrent(alert);
-              	}
+			   new EnvoieSms(donnee);
+			   ListenSMS sms = new ListenSMS("22110", this);
+			   sms.start();
+			   
 			 }
 		
 			if (c==quitter)
 			{
 			 new Login(this.display,next);
 			}
+			
 		
 		}
 
+
+	public void notifyIncomingMessage(MessageConnection arg0) {
+		Message message;
+		try {
+			message = arg0.receive();
+			if (message instanceof TextMessage) {
+				TextMessage tMessage = (TextMessage)message;
+				System.out.println(tMessage.getPayloadText());
+				Alert alert = new Alert("Alert");
+		        alert.setString(tMessage.toString());
+		        alert.setTimeout(10000);
+		        display.setCurrent(alert);
+			} else {
+				System.out.println("message pas recu");
+			}
+		} catch (InterruptedIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
+	}
+ 
+
+
+class ListenSMS extends Thread {
+	private MessageConnection msgConnection;
+	private MessageListener listener;
+	private String port;
+ 
+	public ListenSMS(String port, MessageListener listener) {
+		this.port = port;
+		this.listener = listener;
+	}
+ 
+	public void run() {
+		try {
+			msgConnection = (MessageConnection)Connector.open("sms://:"+port);
+			msgConnection.setMessageListener(listener);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+ 
 }

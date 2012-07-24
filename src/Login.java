@@ -6,9 +6,11 @@
 
 import java.io.IOException;
 import javax.microedition.lcdui.*;
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.midlet.MIDletStateChangeException;
 
 
-public class Login implements CommandListener
+public class Login extends MIDlet implements CommandListener
 {
 
     private Display _display;
@@ -18,6 +20,7 @@ public class Login implements CommandListener
     private Form _form;
     private TextField _login, _pwd;
 
+    
     public Login(Display display, Displayable next)
     {
         //setting display
@@ -40,7 +43,7 @@ public class Login implements CommandListener
         
 
         //commandes
-        this._cancelCmd = new Command("Sortir", Command.SCREEN,1);
+        this._cancelCmd = new Command("Sortir", Command.EXIT,1);
         this._loginCmd = new Command("Connection", Command.SCREEN,0);
         this._inscriptionCmd = new Command("Inscription",Command.SCREEN,0);
         //form
@@ -108,8 +111,7 @@ public class Login implements CommandListener
                Alert success = new Alert("Success","Welcome to MLouma platform!", null, AlertType.INFO);
                      success.setTimeout(5000);
                      _display.setCurrent(success);
-
-            new MainMenu(this._display);
+                     new MainMenu(this._display);
 
             }
             
@@ -125,9 +127,30 @@ public class Login implements CommandListener
         	new Inscription(this._display);
         }
         if(c==_cancelCmd){
-        	
+        	try {
+				destroyApp(true);
+			} catch (MIDletStateChangeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
     }
+
+	protected void destroyApp(boolean unconditional)
+			throws MIDletStateChangeException {
+		notifyDestroyed();
+		
+	}
+
+	protected void pauseApp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void startApp() throws MIDletStateChangeException {
+		new Login(_display, _next);
+		
+	}
  
 }

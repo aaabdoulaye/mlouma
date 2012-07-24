@@ -11,8 +11,8 @@ public class MainMenu implements  CommandListener
     private Display _display;
     private Command _exitCmd = new Command("Exit", Command.EXIT, 2);
     private Command _nextCmd = new Command("Selectionner", Command.SCREEN, 2);
-    private Image _ventes, _achats;
-     String[] mainMenuItem = {"Offre", "Demande"};
+    private Image _ventes, _achats,_marche;
+     String[] mainMenuItem = {"Offre", "Demande","Marché"};
     static ChoiceGroup G1; 
     private Form _mainMenuList;
     private Displayable next;
@@ -27,13 +27,14 @@ public class MainMenu implements  CommandListener
         {
             this._ventes = Image.createImage("/panier.jpeg");
             this._achats = Image.createImage("/trollet.jpeg");
+            this._marche = Image.createImage("/mache.jpg");
 
         } catch (IOException ex)
           {
             ex.printStackTrace();
           }
 
-        Image[] mainMenuItemImg = {this._ventes, this._achats};
+        Image[] mainMenuItemImg = {this._ventes, this._achats,this._marche};
         G1 = new ChoiceGroup("Menu Principal", ChoiceGroup.EXCLUSIVE, mainMenuItem, mainMenuItemImg);
 
         _mainMenuList.append(G1);
@@ -59,6 +60,10 @@ public class MainMenu implements  CommandListener
     		else if(G1.isSelected(1))
     		{
     			new Offre(this._display);
+    		}
+    		else if(G1.isSelected(2))
+    		{
+    			new Marche(this._display);
     		}
     		
     	}

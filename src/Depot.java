@@ -3,10 +3,6 @@
  */
 
 import java.util.Calendar;
-
-import javax.microedition.io.Connector;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -16,7 +12,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.TextField;
 import javax.wireless.messaging.MessageConnection;
-import javax.wireless.messaging.TextMessage;
+
 
 
 public class Depot implements CommandListener
@@ -117,46 +113,15 @@ public class Depot implements CommandListener
 				p1.SetType(MainMenu.G1.getString(1));
 			
 			//cration de l'objet JSON et de la donnée à envoyer lors du message
-			String donnee = "insj2me*"+p1.toJSON();
-
-		    //System.out.println(donnee);
-		    
+			String donnee = "offrej2me*"+p1.toJSON();
+ 
 		    //envoit du message au serveur
-			try  
-		    {
-                clientConn=(MessageConnection)Connector.open("sms://22110");
-            } catch(Exception e) 
-          		{
-                	Alert alert = new Alert("Alert");
-                	alert.setString("Impossible de se connecter au serveur. Probleme de réseau");
-                	alert.setTimeout(2000);
-                	_display.setCurrent(alert);
-          		}
-          try 
-          {
-                TextMessage textmessage = (TextMessage) clientConn.newMessage(MessageConnection.TEXT_MESSAGE);
-                textmessage.setAddress("sms://22110");
-                textmessage.setPayloadText(donnee);
-                clientConn.send(textmessage);
-                
-                Alert alert = new Alert("Alert");
-            	alert.setString("votre opération a été envoyée");
-            	alert.setTimeout(2000);
-            	_display.setCurrent(alert);
-            	
-                new Offre(_display);
-          } catch(Exception e)
-          	{
-                Alert alert=new Alert("Alert","",null,AlertType.INFO);
-                alert.setTimeout(Alert.FOREVER);
-                alert.setString("impossible d'envoyer le message");
-                _display.setCurrent(alert);
-          	}
+			new EnvoieSms(donnee);
 		 }
 		
 		
 		if(arg0.equals(_retour)){
-			new ListeProduit(_display);
+			new ListeProduit(_display,0);
 		}
 		
 	}

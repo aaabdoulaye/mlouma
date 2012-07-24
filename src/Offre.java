@@ -50,7 +50,7 @@ public class Offre implements CommandListener
 			nombase = "ventedb";
 			mb= new Mabase(nombase);
 			s= mb.ReadStream(); 
-			ch = new ChoiceGroup("achat", ChoiceGroup.EXCLUSIVE, s, null);
+			ch = new ChoiceGroup("demande", ChoiceGroup.EXCLUSIVE, s, null);
 			mb.CloseRectStore();
 			form.append(ch);
 		}
@@ -80,7 +80,7 @@ public class Offre implements CommandListener
 	public void commandAction(Command c, Displayable arg1) {
 		if(c==_deposer)
 		{
-			new ListeProduit(display);
+			new ListeProduit(display,0);
 		}
 		
 		if(c==_modifier)

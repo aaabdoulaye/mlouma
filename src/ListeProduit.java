@@ -3,9 +3,6 @@
  */
 
 import java.util.Calendar;
-import javax.microedition.io.Connector;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -15,7 +12,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.TextField;
 import javax.wireless.messaging.MessageConnection;
-import javax.wireless.messaging.TextMessage;
 
 
 
@@ -33,28 +29,46 @@ public class ListeProduit implements CommandListener {
 	
 	static ChoiceGroup GROUP , g1;;
 	private Display _display;
-	private Command _retour,_envoyer,_continuer,_envoyermofif;
+	private Command _retour,_envoyer,_continuer,_envoyermofif,_envoyerO;
 	private Form _form;
 	
 	MessageConnection clientConn;
 	
 	//constructeur qui sera appelé lors d'une nouvelle insertion
-	public ListeProduit(Display display)
+	public ListeProduit(Display display,int i)
 	{
+		
 		this._display = display;
-		_form = new Form("Produits");
+		if(i==0)
+		{
+			_form = new Form("Produits");
 		
-		GROUP = new ChoiceGroup("Liste des Produits", ChoiceGroup.EXCLUSIVE, liste, null);
-		_retour = new Command("retour", Command.BACK, 0);
-		_envoyer = new Command("suivant",Command.OK,0);
+			GROUP = new ChoiceGroup("Liste des Produits", ChoiceGroup.EXCLUSIVE, liste, null);
+			_retour = new Command("retour", Command.BACK, 0);
+			_envoyer = new Command("suivant",Command.OK,0);
 		
-		_form.append(GROUP);
-		_form.addCommand(_retour);
-		_form.addCommand(_envoyer);
-		_form.setCommandListener(this);
+			_form.append(GROUP);
+			_form.addCommand(_retour);
+			_form.addCommand(_envoyer);
+			_form.setCommandListener(this);
 		
-		this._display.setCurrent(_form);
+			this._display.setCurrent(_form);
+		}
+		else
+		{
+			_form = new Form("Produits");
 		
+			GROUP = new ChoiceGroup("Liste des Produits", ChoiceGroup.EXCLUSIVE, liste, null);
+			_retour = new Command("retour", Command.BACK, 0);
+			_envoyerO = new Command("suivant",Command.OK,0);
+	
+			_form.append(GROUP);
+			_form.addCommand(_retour);
+			_form.addCommand(_envoyerO);
+			_form.setCommandListener(this);
+	
+			this._display.setCurrent(_form);
+		}
 	}
 	
 	
@@ -116,7 +130,7 @@ public class ListeProduit implements CommandListener {
 			new Depot(_display);
 		}
 		// apres la modifiation du nom du produit
-		if (c == _continuer)
+		if (c.equals(_continuer))
 		{
 			String[] transport = {"Non","Oui"};
 			
@@ -136,7 +150,7 @@ public class ListeProduit implements CommandListener {
 			
 			// creation du formulation de modification et insertion des données précedement entrées
 			_Tlocalite = new TextField("localite", _localite, 25, TextField.ANY);
-			_Tquantite = new TextField(_quantite, _quantite, 25, TextField.NUMERIC);
+			_Tquantite = new TextField("quantite", _quantite, 25, TextField.NUMERIC);
 			_Tunite = new TextField("unite", _unite, 25, TextField.ANY);
 			_Ddate = new DateField("date", DateField.DATE);
 			_form.addCommand(_retour);
@@ -152,7 +166,7 @@ public class ListeProduit implements CommandListener {
 		}
 		
 		// envoit de la modification
-		if(c == _envoyermofif)
+		if(c.equals(_envoyermofif))
 		{
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(_Ddate.getDate());
@@ -188,40 +202,15 @@ public class ListeProduit implements CommandListener {
 
 		    System.out.println(donnee);
 		    
-		    
+		    new EnvoieSms(donnee);
 		
-			try  
-		    {
-                clientConn=(MessageConnection)Connector.open("sms://22110");
-            } catch(Exception e) 
-          		{
-            		
-                	Alert alert = new Alert("Alert");
-                	alert.setString("Impssible de se connecter au serveur. Probleme de réseau");
-                	alert.setTimeout(2000);
-                	_display.setCurrent(alert);
-          		}
-          try 
-          {
-                TextMessage textmessage = (TextMessage) clientConn.newMessage(MessageConnection.TEXT_MESSAGE);
-                textmessage.setAddress("sms://22110");
-                textmessage.setPayloadText(donnee);
-                clientConn.send(textmessage);
-                
-                Alert alert = new Alert("Alert");
-            	alert.setString("les modifications ont été envoyées");
-            	alert.setTimeout(2000);
-            	_display.setCurrent(alert);
-            	
-                new Offre(_display);
-          } catch(Exception e)
-          	{
-                Alert alert=new Alert("Alert","",null,AlertType.INFO);
-                alert.setTimeout(Alert.FOREVER);
-                alert.setString("Impossible d'envoyer les modifications");
-                _display.setCurrent(alert);
-          	}
+		
 		 }
+		
+		if(c.equals(_envoyerO))
+		{
+			new Region(_display);
+		}
 		
 		}
 		
